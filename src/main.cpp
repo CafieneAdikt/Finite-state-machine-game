@@ -22,7 +22,7 @@ const int INTBUTTON3 = 6; // pause button
 volatile bool UP_Pressed = false; // flag for up button
 volatile bool DWN_Pressed = false; // flag for down button
 volatile bool PAUSE_Pressed = false; // flag for pause button
-const unsigned long DEBOUNCE_TIME_MS = 500; // debounce time interval
+const unsigned long DEBOUNCE_TIME_MS = 200; // debounce time interval
 unsigned long previousDebounce = 0; // define and set variable to zero
 unsigned long previousMillis = 0; // define and set variable to zero
 
@@ -191,6 +191,7 @@ void loop() {
       break;
 
     case GAME_screen:
+    PAUSE_Pressed = false;
       // actions
       charactergrounded();
 
@@ -199,13 +200,13 @@ void loop() {
       previousDebounce = currentmillis;   // set new debounce time
       display.clearDisplay(); // clear screen
       current_state = PAUSE_screen; // go to pause screen
-      PAUSE_Pressed = false; // reset flag
       }
       // if you die in game go to end screen
 
       break;
 
     case PAUSE_screen:
+    PAUSE_Pressed = false;
       // actions
       PAUSEscreen(); 
 
@@ -214,7 +215,6 @@ void loop() {
       previousDebounce = currentmillis;   // set new debounce time
       display.clearDisplay(); // clear screen
       current_state = GAME_screen; // go back to game srceen state
-      PAUSE_Pressed = false; // reset flag
       }
       // if down button pressed end game
       if (DWN_Pressed && ((currentmillis - previousDebounce) >= DEBOUNCE_TIME_MS)) {
