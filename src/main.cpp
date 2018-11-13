@@ -67,15 +67,30 @@ void STARTscreen(void) {
 }
 
 void PAUSEscreen(void) {
-  display.setTextSize(3);
+  display.setTextSize(2);
   display.setTextColor(WHITE);
-  display.setCursor(25,10);
+  display.setCursor(35,0);
   display.println("PAUSE");
   display.display();
   display.setTextSize(2);
   display.setTextColor(WHITE);
-  display.setCursor(15,45);
+  display.setCursor(5,20);
   display.println("SCORE:");
+  display.display();
+  display.setTextSize(1);
+  display.setTextColor(WHITE);
+  display.setCursor(0,37);
+  display.println("Press:");
+  display.display();
+  display.setTextSize(1);
+  display.setTextColor(WHITE);
+  display.setCursor(0,47);
+  display.println("-Pause to continue");
+  display.display();
+  display.setTextSize(1);
+  display.setTextColor(WHITE);
+  display.setCursor(0,57);
+  display.println("-Down to go to start");
   display.display();
   delay(2000);
   display.clearDisplay();
@@ -555,13 +570,13 @@ void loop() {
 
   unsigned long currentmillis = millis(); // recheck and set the time variable for debouncing
 
-  SCORE = currentmillis/1000;
-
-  Serial.print(SCORE);
-
 
   switch(current_state) {
     case START_screen:
+      UP_Pressed = false; // reset flags
+      DWN_Pressed = false;
+      PAUSE_Pressed = false; 
+
       // actions
       STARTscreen();
 
@@ -571,9 +586,6 @@ void loop() {
       previousDebounce = currentmillis;   // set new debounce time
       display.clearDisplay(); // clear screen
       current_state = GAME_screen; // go to game screen
-      UP_Pressed = false; // reset flags
-      DWN_Pressed = false;
-      PAUSE_Pressed = false; 
       }
       break;
 
@@ -600,7 +612,8 @@ void loop() {
       break;
 
     case PAUSE_screen:
-    PAUSE_Pressed = false;
+    PAUSE_Pressed = false; // reset flags
+    DWN_Pressed = false; 
       // actions
       PAUSEscreen(); 
 
@@ -613,28 +626,28 @@ void loop() {
       // if down button pressed end game
       if (DWN_Pressed && ((currentmillis - previousDebounce) >= DEBOUNCE_TIME_MS)) {
       previousDebounce = currentmillis;   // set new debounce time
-      current_state = GAME_screen; // go to start screen
-      DWN_Pressed = false; // reset flag
+      current_state = START_screen; // go to start screen
       }
       break;
 
     case END_screen:
+      UP_Pressed = false; // reset flag
+      DWN_Pressed = false; // reset flag
+      PAUSE_Pressed = false; // reset flag
       // actions
+      ENDscreen();
 
       // if pause play button is pressed play another game
       if (PAUSE_Pressed && ((currentmillis - previousDebounce) >= DEBOUNCE_TIME_MS)) {
       previousDebounce = currentmillis;   // set new debounce time
       display.clearDisplay(); // clear screen
       current_state = GAME_screen;
-      PAUSE_Pressed = false; // reset flag
       }
       // if up of down button is pressed go to start sceen
       if ((UP_Pressed && ((currentmillis - previousDebounce) >= DEBOUNCE_TIME_MS)) || (DWN_Pressed && ((currentmillis - previousDebounce) >= DEBOUNCE_TIME_MS))) {
       previousDebounce = currentmillis;   // set new debounce time
       display.clearDisplay(); // clear screen
       current_state = START_screen;
-      UP_Pressed = false; // reset flag
-      DWN_Pressed = false; // reset flag
       }
       break;
   }
