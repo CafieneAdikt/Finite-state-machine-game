@@ -1,4 +1,15 @@
 #include <Arduino.h>
+#include <SPI.h>
+#include <Wire.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
+
+#define OLED_RESET 4
+Adafruit_SSD1306 display(OLED_RESET);
+
+#if (SSD1306_LCDHEIGHT != 64)
+#error("Height incorrect, please fix Adafruit_SSD1306.h!");
+#endif
 
 // create new int variable type called state
 enum state {START_screen, GAME_screen, PAUSE_screen, END_screen};
@@ -37,7 +48,26 @@ void PAUSEBUTTON_ISR(){
 }
 
 
+void STARTscreen(void) {
+  display.setTextSize(2);
+  display.setTextColor(WHITE);
+  display.setCursor(25,0);
+  display.clearDisplay();
+  display.println("Fleeing    Ninja");
+  display.display();
+  delay(1000);
+  display.setTextSize(1);
+  display.setTextColor(WHITE);
+  display.setCursor(18,45);
+  display.println("Press Any Button");
+  display.display();
+
+}
+
+
 void setup() {
+
+    Serial.begin(9600);
 
   pinMode(INTBUTTON1, INPUT_PULLUP); // up button
   pinMode(INTBUTTON2, INPUT_PULLUP); // dwn button
@@ -45,6 +75,14 @@ void setup() {
   attachInterrupt(digitalPinToInterrupt(INTBUTTON1), UPBUTTON_ISR, FALLING); // set up interrupt routines
   attachInterrupt(digitalPinToInterrupt(INTBUTTON2), DOWNBUTTON_ISR, FALLING);
   attachInterrupt(digitalPinToInterrupt(INTBUTTON3), PAUSEBUTTON_ISR, FALLING);
+
+    // by default, we'll generate the high voltage from the 3.3v line internally! (neat!)
+  display.begin(SSD1306_SWITCHCAPVCC, 0x3C);  // initialize with the I2C addr 0x3D (for the 128x64)
+ 
+  display.display();
+
+  // Clear the buffer.
+  display.clearDisplay();
 
 }
 
@@ -56,6 +94,7 @@ void loop() {
   switch(current_state) {
     case START_screen:
       // actions
+      STARTscreen();
 
       // if any button is pressed start game
       if ((UP_Pressed &&
