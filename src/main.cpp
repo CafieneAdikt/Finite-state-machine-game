@@ -17,7 +17,7 @@ enum state {START_screen, GAME_screen, PAUSE_screen, END_screen};
 state current_state = START_screen; // set initial state
 
 const int INTBUTTON1 = 7; // up button
-const int INTBUTTON2 = 4; // down button
+const int INTBUTTON2 = 3; // down button
 const int INTBUTTON3 = 6; // pause button
 volatile bool UP_Pressed = false; // flag for up button
 volatile bool DWN_Pressed = false; // flag for down button
