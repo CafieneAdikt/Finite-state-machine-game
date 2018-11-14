@@ -16,6 +16,9 @@ enum state {START_screen, GAME_screen, PAUSE_screen, END_screen};
 
 state current_state = START_screen; // set initial state
 
+
+static const uint8_t SWORD_SCROLL_DELAY = 200;
+
 const int INTBUTTON1 = 7; // up button
 const int INTBUTTON2 = 3; // down button
 const int INTBUTTON3 = 6; // pause button
@@ -719,41 +722,40 @@ void characterjump(void) {
 }
 
 
-
-void thrownsword(){
+void thrownsword(uint8_t offset, int colour){
   // sword shape
-    display.drawPixel(100,45,WHITE);
-    display.drawPixel(101,45,WHITE);
-    display.drawPixel(102,45,WHITE);
-    display.drawPixel(103,45,WHITE);
-    display.drawPixel(104,45,WHITE);
-    display.drawPixel(105,45,WHITE);
-    display.drawPixel(106,45,WHITE);
-    display.drawPixel(107,45,WHITE);
-    display.drawPixel(108,45,WHITE);
-    display.drawPixel(109,45,WHITE);
-    display.drawPixel(110,45,WHITE);
-    display.drawPixel(111,45,WHITE);
-    display.drawPixel(112,45,WHITE);
-    display.drawPixel(113,45,WHITE);
-    display.drawPixel(114,45,WHITE);
-    display.drawPixel(115,45,WHITE);
-    display.drawPixel(110,44,WHITE);
-    display.drawPixel(110,43,WHITE);
-    display.drawPixel(110,42,WHITE);
-    display.drawPixel(110,41,WHITE);
-    display.drawPixel(110,40,WHITE);
-    display.drawPixel(110,46,WHITE);
-    display.drawPixel(110,47,WHITE);
-    display.drawPixel(110,48,WHITE);
-    display.drawPixel(110,49,WHITE);
-    display.drawPixel(110,50,WHITE);
+    display.drawPixel(100-offset,45,colour);
+    display.drawPixel(101-offset,45,colour);
+    display.drawPixel(102-offset,45,colour);
+    display.drawPixel(103-offset,45,colour);
+    display.drawPixel(104-offset,45,colour);
+    display.drawPixel(105-offset,45,colour);
+    display.drawPixel(106-offset,45,colour);
+    display.drawPixel(107-offset,45,colour);
+    display.drawPixel(108-offset,45,colour);
+    display.drawPixel(109-offset,45,colour);
+    display.drawPixel(110-offset,45,colour);
+    display.drawPixel(111-offset,45,colour);
+    display.drawPixel(112-offset,45,colour);
+    display.drawPixel(113-offset,45,colour);
+    display.drawPixel(114-offset,45,colour);
+    display.drawPixel(115-offset,45,colour);
+    display.drawPixel(110-offset,44,colour);
+    display.drawPixel(110-offset,43,colour);
+    display.drawPixel(110-offset,42,colour);
+    display.drawPixel(110-offset,41,colour);
+    display.drawPixel(110-offset,40,colour);
+    display.drawPixel(110-offset,46,colour);
+    display.drawPixel(110-offset,47,colour);
+    display.drawPixel(110-offset,48,colour);
+    display.drawPixel(110-offset,49,colour);
+    display.drawPixel(110-offset,50,colour);
 
     // display 
     display.display();
 
     // throw sword
-    display.startscrollleft(0x00, 0x0F);
+    // display.startscrollleft(0x00, 0x0F);
 
 
 }
@@ -780,9 +782,9 @@ void setup() {
 
 
 void loop() {
+  static uint8_t offset = 0;
 
   unsigned long currentmillis = millis(); // recheck and set the time variable for debouncing
-
 // state machine
   switch(current_state) {
     case START_screen:
@@ -809,7 +811,12 @@ void loop() {
       DWN_Pressed = false;
       // actions
       charactergrounded();
-      //thrownsword();
+      if (currentmillis - previousMillis > SWORD_SCROLL_DELAY) {
+        thrownsword(offset, BLACK);
+        offset++;
+        thrownsword(offset, WHITE);
+        previousMillis = currentmillis;
+      }
 
       // make character jump
       if (UP_Pressed && ((currentmillis - previousDebounce) >= DEBOUNCE_TIME_MS)) {
@@ -824,6 +831,9 @@ void loop() {
       current_state = PAUSE_screen; // go to pause screen
       }
       // if you die in game go to end screen
+
+      // stop scrolling function
+      display.stopscroll();
 
       break;
 
