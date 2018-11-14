@@ -48,6 +48,7 @@ void PAUSEBUTTON_ISR(){
 
 }
 
+// functions
 
 void STARTscreen(void) {
   display.setTextSize(2);
@@ -92,8 +93,7 @@ void PAUSEscreen(void) {
   display.setCursor(0,57);
   display.println("-Down to go to start");
   display.display();
-  delay(2000);
-  display.clearDisplay();
+  delay(1000);
 
 }
 
@@ -123,9 +123,7 @@ void ENDscreen(){
   display.setCursor(0,57);
   display.println("-Down to go to start");
   display.display();
-  
-  delay(2000);
-  display.clearDisplay();
+  delay(1000);
 
 }
 
@@ -254,7 +252,61 @@ void characterjump(void) {
     // display character
     display.display();
     delay(250);
-    display.clearDisplay();
+    
+    // write over in BLACK
+    display.drawCircle(20, 35, 5, BLACK);
+    display.drawPixel(20,41,BLACK);
+    display.drawPixel(20,42,BLACK);
+    display.drawPixel(20,43,BLACK);
+    display.drawPixel(20,44,BLACK);
+    display.drawPixel(20,45,BLACK);
+    display.drawPixel(20,46,BLACK);
+    display.drawPixel(20,47,BLACK);
+    display.drawPixel(20,48,BLACK);
+    display.drawPixel(20,49,BLACK);
+    display.drawPixel(20,50,BLACK);
+    display.drawPixel(20,51,BLACK);
+    display.drawPixel(20,52,BLACK);
+    display.drawPixel(20,53,BLACK);
+    display.drawPixel(20,54,BLACK);
+
+    // left leg
+    display.drawPixel(19,55,BLACK);
+    display.drawPixel(19,56,BLACK);
+    display.drawPixel(18,57,BLACK);
+    display.drawPixel(18,58,BLACK);
+    display.drawPixel(17,59,BLACK);
+    display.drawPixel(17,60,BLACK);
+    display.drawPixel(16,61,BLACK);
+    display.drawPixel(16,62,BLACK);
+    display.drawPixel(15,63,BLACK);
+
+    // right leg
+    display.drawPixel(21,55,BLACK);
+    display.drawPixel(21,56,BLACK);
+    display.drawPixel(22,57,BLACK);
+    display.drawPixel(22,58,BLACK);
+    display.drawPixel(23,59,BLACK);
+    display.drawPixel(23,60,BLACK);
+    display.drawPixel(24,61,BLACK);
+    display.drawPixel(24,62,BLACK);
+    display.drawPixel(25,63,BLACK);
+
+    // left arm
+    display.drawPixel(19,47,BLACK);
+    display.drawPixel(18,47,BLACK);
+    display.drawPixel(17,47,BLACK);
+    display.drawPixel(16,47,BLACK);
+    display.drawPixel(15,47,BLACK);
+    display.drawPixel(14,47,BLACK);
+
+    // right arm
+    display.drawPixel(21,47,BLACK);
+    display.drawPixel(22,47,BLACK);
+    display.drawPixel(23,47,BLACK);
+    display.drawPixel(24,47,BLACK);
+    display.drawPixel(25,47,BLACK);
+    display.drawPixel(26,47,BLACK);
 
 
     // jump halway up
@@ -315,7 +367,62 @@ void characterjump(void) {
     // display character
     display.display();
     delay(250);
-    display.clearDisplay();
+
+    // write over in black
+     // jump halway up
+    display.drawCircle(20, 15, 5, BLACK);
+    display.drawPixel(20,21,BLACK);
+    display.drawPixel(20,22,BLACK);
+    display.drawPixel(20,23,BLACK);
+    display.drawPixel(20,24,BLACK);
+    display.drawPixel(20,25,BLACK);
+    display.drawPixel(20,26,BLACK);
+    display.drawPixel(20,27,BLACK);
+    display.drawPixel(20,28,BLACK);
+    display.drawPixel(20,29,BLACK);
+    display.drawPixel(20,30,BLACK);
+    display.drawPixel(20,31,BLACK);
+    display.drawPixel(20,32,BLACK);
+    display.drawPixel(20,33,BLACK);
+    display.drawPixel(20,34,BLACK);
+
+    // left leg
+    display.drawPixel(19,35,BLACK);
+    display.drawPixel(19,36,BLACK);
+    display.drawPixel(18,37,BLACK);
+    display.drawPixel(18,38,BLACK);
+    display.drawPixel(17,39,BLACK);
+    display.drawPixel(17,40,BLACK);
+    display.drawPixel(16,41,BLACK);
+    display.drawPixel(16,42,BLACK);
+    display.drawPixel(15,43,BLACK);
+
+    // right leg
+    display.drawPixel(21,35,BLACK);
+    display.drawPixel(21,36,BLACK);
+    display.drawPixel(22,37,BLACK);
+    display.drawPixel(22,38,BLACK);
+    display.drawPixel(23,39,BLACK);
+    display.drawPixel(23,40,BLACK);
+    display.drawPixel(24,41,BLACK);
+    display.drawPixel(24,42,BLACK);
+    display.drawPixel(25,43,BLACK);
+
+    // left arm
+    display.drawPixel(19,27,BLACK);
+    display.drawPixel(18,27,BLACK);
+    display.drawPixel(17,27,BLACK);
+    display.drawPixel(16,27,BLACK);
+    display.drawPixel(15,27,BLACK);
+    display.drawPixel(14,27,BLACK);
+
+    // right arm
+    display.drawPixel(21,27,BLACK);
+    display.drawPixel(22,27,BLACK);
+    display.drawPixel(23,27,BLACK);
+    display.drawPixel(24,27,BLACK);
+    display.drawPixel(25,27,BLACK);
+    display.drawPixel(26,27,BLACK);
 
       // jump all way up
     display.drawCircle(20, 5, 5, WHITE);
@@ -375,7 +482,62 @@ void characterjump(void) {
     // display character
     display.display();
     delay(250);
-    display.clearDisplay();
+
+    // write over in black
+       // jump all way up
+    display.drawCircle(20, 5, 5, BLACK);
+    display.drawPixel(20,11,BLACK);
+    display.drawPixel(20,12,BLACK);
+    display.drawPixel(20,13,BLACK);
+    display.drawPixel(20,14,BLACK);
+    display.drawPixel(20,15,BLACK);
+    display.drawPixel(20,16,BLACK);
+    display.drawPixel(20,17,BLACK);
+    display.drawPixel(20,18,BLACK);
+    display.drawPixel(20,19,BLACK);
+    display.drawPixel(20,20,BLACK);
+    display.drawPixel(20,21,BLACK);
+    display.drawPixel(20,22,BLACK);
+    display.drawPixel(20,23,BLACK);
+    display.drawPixel(20,24,BLACK);
+
+    // left leg
+    display.drawPixel(19,25,BLACK);
+    display.drawPixel(19,26,BLACK);
+    display.drawPixel(18,27,BLACK);
+    display.drawPixel(18,28,BLACK);
+    display.drawPixel(17,29,BLACK);
+    display.drawPixel(17,30,BLACK);
+    display.drawPixel(16,31,BLACK);
+    display.drawPixel(16,32,BLACK);
+    display.drawPixel(15,33,BLACK);
+
+    // right leg
+    display.drawPixel(21,25,BLACK);
+    display.drawPixel(21,26,BLACK);
+    display.drawPixel(22,27,BLACK);
+    display.drawPixel(22,28,BLACK);
+    display.drawPixel(23,29,BLACK);
+    display.drawPixel(23,30,BLACK);
+    display.drawPixel(24,31,BLACK);
+    display.drawPixel(24,32,BLACK);
+    display.drawPixel(25,33,BLACK);
+
+    // left arm
+    display.drawPixel(19,17,BLACK);
+    display.drawPixel(18,17,BLACK);
+    display.drawPixel(17,17,BLACK);
+    display.drawPixel(16,17,BLACK);
+    display.drawPixel(15,17,BLACK);
+    display.drawPixel(14,17,BLACK);
+
+    // right arm
+    display.drawPixel(21,17,BLACK);
+    display.drawPixel(22,17,BLACK);
+    display.drawPixel(23,17,BLACK);
+    display.drawPixel(24,17,BLACK);
+    display.drawPixel(25,17,BLACK);
+    display.drawPixel(26,17,BLACK);
 
 
     // jump halway up
@@ -436,7 +598,63 @@ void characterjump(void) {
     // display character
     display.display();
     delay(250);
-    display.clearDisplay();
+
+    // write over in black
+     // jump halway up
+    display.drawCircle(20, 15, 5, BLACK);
+    display.drawPixel(20,21,BLACK);
+    display.drawPixel(20,22,BLACK);
+    display.drawPixel(20,23,BLACK);
+    display.drawPixel(20,24,BLACK);
+    display.drawPixel(20,25,BLACK);
+    display.drawPixel(20,26,BLACK);
+    display.drawPixel(20,27,BLACK);
+    display.drawPixel(20,28,BLACK);
+    display.drawPixel(20,29,BLACK);
+    display.drawPixel(20,30,BLACK);
+    display.drawPixel(20,31,BLACK);
+    display.drawPixel(20,32,BLACK);
+    display.drawPixel(20,33,BLACK);
+    display.drawPixel(20,34,BLACK);
+
+    // left leg
+    display.drawPixel(19,35,BLACK);
+    display.drawPixel(19,36,BLACK);
+    display.drawPixel(18,37,BLACK);
+    display.drawPixel(18,38,BLACK);
+    display.drawPixel(17,39,BLACK);
+    display.drawPixel(17,40,BLACK);
+    display.drawPixel(16,41,BLACK);
+    display.drawPixel(16,42,BLACK);
+    display.drawPixel(15,43,BLACK);
+
+    // right leg
+    display.drawPixel(21,35,BLACK);
+    display.drawPixel(21,36,BLACK);
+    display.drawPixel(22,37,BLACK);
+    display.drawPixel(22,38,BLACK);
+    display.drawPixel(23,39,BLACK);
+    display.drawPixel(23,40,BLACK);
+    display.drawPixel(24,41,BLACK);
+    display.drawPixel(24,42,BLACK);
+    display.drawPixel(25,43,BLACK);
+
+    // left arm
+    display.drawPixel(19,27,BLACK);
+    display.drawPixel(18,27,BLACK);
+    display.drawPixel(17,27,BLACK);
+    display.drawPixel(16,27,BLACK);
+    display.drawPixel(15,27,BLACK);
+    display.drawPixel(14,27,BLACK);
+
+    // right arm
+    display.drawPixel(21,27,BLACK);
+    display.drawPixel(22,27,BLACK);
+    display.drawPixel(23,27,BLACK);
+    display.drawPixel(24,27,BLACK);
+    display.drawPixel(25,27,BLACK);
+    display.drawPixel(26,27,BLACK); 
+
 
     // grounded
     display.drawCircle(20, 35, 5, WHITE);
@@ -496,9 +714,6 @@ void characterjump(void) {
     // display character
     display.display();
     delay(250);
-    display.clearDisplay();
-
-
 
 
 }
@@ -546,7 +761,7 @@ void thrownsword(){
 
 void setup() {
 
-    Serial.begin(9600);
+    Serial.begin(9600); // set up serial com speed
 
   pinMode(INTBUTTON1, INPUT_PULLUP); // up button
   pinMode(INTBUTTON2, INPUT_PULLUP); // dwn button
@@ -557,10 +772,8 @@ void setup() {
 
     // by default, we'll generate the high voltage from the 3.3v line internally! (neat!)
   display.begin(SSD1306_SWITCHCAPVCC, 0x3C);  // initialize with the I2C addr 0x3D (for the 128x64)
- 
-  display.display();
 
-  // Clear the buffer.
+  // clear the buffer
   display.clearDisplay();
 
 }
@@ -570,10 +783,11 @@ void loop() {
 
   unsigned long currentmillis = millis(); // recheck and set the time variable for debouncing
 
-
+// state machine
   switch(current_state) {
     case START_screen:
-      UP_Pressed = false; // reset flags
+      // reset flags
+      UP_Pressed = false; 
       DWN_Pressed = false;
       PAUSE_Pressed = false; 
 
@@ -590,7 +804,9 @@ void loop() {
       break;
 
     case GAME_screen:
-    PAUSE_Pressed = false;
+      PAUSE_Pressed = false; // reset flag
+      UP_Pressed = false;
+      DWN_Pressed = false;
       // actions
       charactergrounded();
       //thrownsword();
