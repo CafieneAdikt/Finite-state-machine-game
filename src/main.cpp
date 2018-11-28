@@ -26,8 +26,10 @@ volatile bool PAUSE_Pressed = false; // flag for pause button
 const unsigned long DEBOUNCE_TIME_MS = 200; // debounce time interval
 unsigned long previousDebounce = 0; // define and set variable to zero
 unsigned long previousMillis = 0; // define and set variable to zero
-const unsigned long responsetime = 1000; // minimum time player has to respond by
+const unsigned long responsetime = 5000; // minimum time player has to respond by
 unsigned long SCORE = 0; // define variable for score
+unsigned long Dtime = rand()%1000+500; // random number between
+unsigned long jumporduck = rand()%10+1; // random number between 1 and 10
 
 
 // interrupt routines for buttons
@@ -57,7 +59,9 @@ void STARTscreen(void) {
   display.setTextColor(WHITE);
   display.setCursor(25,0);
   display.clearDisplay();
-  display.println("Fleeing    Ninja");
+  display.println("Jumping");
+  display.setCursor(20,20);
+  display.println("Stickman");
   display.display();
   delay(500);
   display.setTextSize(1);
@@ -118,13 +122,13 @@ void ENDscreen(){
   display.display();
   display.setTextSize(1);
   display.setTextColor(WHITE);
-  display.setCursor(0,37);
-  display.println("Press:");
+  display.setCursor(20,40);
+  display.println("Press Any Button");
   display.display();
   display.setTextSize(1);
   display.setTextColor(WHITE);
-  display.setCursor(0,47);
-  display.println("-Down to go to start");
+  display.setCursor(20,50);
+  display.println("To go to start");
   display.display();
   delay(1000);
 
@@ -721,12 +725,137 @@ void characterjump(void) {
 
 }
 
+void characterduck(void) {
+   // grounded
+    display.drawCircle(20, 35, 5, WHITE);
+    display.drawPixel(20,41,WHITE);
+    display.drawPixel(20,42,WHITE);
+    display.drawPixel(20,43,WHITE);
+    display.drawPixel(20,44,WHITE);
+    display.drawPixel(20,45,WHITE);
+    display.drawPixel(20,46,WHITE);
+    display.drawPixel(20,47,WHITE);
+    display.drawPixel(20,48,WHITE);
+    display.drawPixel(20,49,WHITE);
+    display.drawPixel(20,50,WHITE);
+    display.drawPixel(20,51,WHITE);
+    display.drawPixel(20,52,WHITE);
+    display.drawPixel(20,53,WHITE);
+    display.drawPixel(20,54,WHITE);
+
+    // left leg
+    display.drawPixel(19,55,WHITE);
+    display.drawPixel(19,56,WHITE);
+    display.drawPixel(18,57,WHITE);
+    display.drawPixel(18,58,WHITE);
+    display.drawPixel(17,59,WHITE);
+    display.drawPixel(17,60,WHITE);
+    display.drawPixel(16,61,WHITE);
+    display.drawPixel(16,62,WHITE);
+    display.drawPixel(15,63,WHITE);
+
+    // right leg
+    display.drawPixel(21,55,WHITE);
+    display.drawPixel(21,56,WHITE);
+    display.drawPixel(22,57,WHITE);
+    display.drawPixel(22,58,WHITE);
+    display.drawPixel(23,59,WHITE);
+    display.drawPixel(23,60,WHITE);
+    display.drawPixel(24,61,WHITE);
+    display.drawPixel(24,62,WHITE);
+    display.drawPixel(25,63,WHITE);
+
+    // left arm
+    display.drawPixel(19,47,WHITE);
+    display.drawPixel(18,47,WHITE);
+    display.drawPixel(17,47,WHITE);
+    display.drawPixel(16,47,WHITE);
+    display.drawPixel(15,47,WHITE);
+    display.drawPixel(14,47,WHITE);
+
+    // right arm
+    display.drawPixel(21,47,WHITE);
+    display.drawPixel(22,47,WHITE);
+    display.drawPixel(23,47,WHITE);
+    display.drawPixel(24,47,WHITE);
+    display.drawPixel(25,47,WHITE);
+    display.drawPixel(26,47,WHITE);
+
+    // display character
+    display.display();
+    delay(250);
+    
+    // write over in BLACK
+    display.drawCircle(20, 35, 5, BLACK);
+    display.drawPixel(20,41,BLACK);
+    display.drawPixel(20,42,BLACK);
+    display.drawPixel(20,43,BLACK);
+    display.drawPixel(20,44,BLACK);
+    display.drawPixel(20,45,BLACK);
+    display.drawPixel(20,46,BLACK);
+    display.drawPixel(20,47,BLACK);
+    display.drawPixel(20,48,BLACK);
+    display.drawPixel(20,49,BLACK);
+    display.drawPixel(20,50,BLACK);
+    display.drawPixel(20,51,BLACK);
+    display.drawPixel(20,52,BLACK);
+    display.drawPixel(20,53,BLACK);
+    display.drawPixel(20,54,BLACK);
+
+    // left leg
+    display.drawPixel(19,55,BLACK);
+    display.drawPixel(19,56,BLACK);
+    display.drawPixel(18,57,BLACK);
+    display.drawPixel(18,58,BLACK);
+    display.drawPixel(17,59,BLACK);
+    display.drawPixel(17,60,BLACK);
+    display.drawPixel(16,61,BLACK);
+    display.drawPixel(16,62,BLACK);
+    display.drawPixel(15,63,BLACK);
+
+    // right leg
+    display.drawPixel(21,55,BLACK);
+    display.drawPixel(21,56,BLACK);
+    display.drawPixel(22,57,BLACK);
+    display.drawPixel(22,58,BLACK);
+    display.drawPixel(23,59,BLACK);
+    display.drawPixel(23,60,BLACK);
+    display.drawPixel(24,61,BLACK);
+    display.drawPixel(24,62,BLACK);
+    display.drawPixel(25,63,BLACK);
+
+    // left arm
+    display.drawPixel(19,47,BLACK);
+    display.drawPixel(18,47,BLACK);
+    display.drawPixel(17,47,BLACK);
+    display.drawPixel(16,47,BLACK);
+    display.drawPixel(15,47,BLACK);
+    display.drawPixel(14,47,BLACK);
+
+    // right arm
+    display.drawPixel(21,47,BLACK);
+    display.drawPixel(22,47,BLACK);
+    display.drawPixel(23,47,BLACK);
+    display.drawPixel(24,47,BLACK);
+    display.drawPixel(25,47,BLACK);
+    display.drawPixel(26,47,BLACK);
+}
+
 void jumpcommand(){
   // display jump on screen
   display.setTextSize(2);
   display.setTextColor(WHITE);
   display.setCursor(80,30);
   display.println("JUMP");
+  display.display();
+}
+
+void duckcommand(){
+  // display duck on screen
+  display.setTextSize(2);
+  display.setTextColor(WHITE);
+  display.setCursor(80,30);
+  display.println("DUCK");
   display.display();
 }
 
@@ -769,10 +898,11 @@ void loop() {
 
       // if any button is pressed start game
       if ((UP_Pressed &&
-      ((currentmillis - previousDebounce) >= DEBOUNCE_TIME_MS)) || (DWN_Pressed && ((currentmillis - previousDebounce) >= DEBOUNCE_TIME_MS)) || (PAUSE_Pressed && ((currentmillis - previousDebounce) >= DEBOUNCE_TIME_MS))) {
-      previousDebounce = currentmillis;   // set new debounce time
-      display.clearDisplay(); // clear screen
-      current_state = GAME_screen; // go to game screen
+       ((currentmillis - previousDebounce) >= DEBOUNCE_TIME_MS)) || (DWN_Pressed && ((currentmillis - previousDebounce) >= DEBOUNCE_TIME_MS)) || (PAUSE_Pressed && ((currentmillis - previousDebounce) >= DEBOUNCE_TIME_MS))) {
+       previousDebounce = currentmillis;   // set new debounce time
+       display.clearDisplay(); // clear screen
+       previousMillis = currentmillis; // reset response time
+       current_state = GAME_screen; // go to game screen
       }
       break;
 
@@ -783,27 +913,45 @@ void loop() {
       // actions
       charactergrounded();
       // random int- for time delay
-      delay(1000);
-      // tell player to jump
-      jumpcommand();
-      previousMillis = currentmillis; // set response time
+      delay(Dtime);
 
-      // if player takes too long to respond to the command they go to the end screen
-      if (UP_Pressed && ((currentmillis - previousMillis) > responsetime)){ 
-        display.clearDisplay(); // clear screen
-        current_state = END_screen; // go to end screen
+      // if statement to chose between jump or duck
+      if (jumporduck == 1 || jumporduck == 2 || jumporduck == 3 || jumporduck == 4 || jumporduck == 5){
+       jumpcommand(); // tell player to jump
       }
+      else
+      {
+        duckcommand(); // tell player to duck
+      }
+     
 
-
-  
 
       // make character jump
       if (UP_Pressed && ((currentmillis - previousDebounce) >= DEBOUNCE_TIME_MS)) {
         previousDebounce = currentmillis; // set new debounce time
+        previousMillis = currentmillis; // set response time
         display.clearDisplay(); // reset display
         SCORE = SCORE+1; // increase score by one
         characterjump();
         UP_Pressed = false; // reset flag
+      }
+
+      // make character duck
+      if (DWN_Pressed && ((currentmillis - previousDebounce) >= DEBOUNCE_TIME_MS)) {
+        previousDebounce = currentmillis; // set new debounce time
+        previousMillis = currentmillis; // set response time
+        display.clearDisplay(); // reset display
+        SCORE = SCORE+1; // increase score by one
+        characterduck();
+        DWN_Pressed = false; // reset flag
+      }
+
+
+      // if player takes too long to respond to the command they go to the end screen
+      if ((currentmillis - previousMillis) >= responsetime){
+        previousMillis = currentmillis; // set response time 
+        display.clearDisplay(); // clear screen
+        current_state = END_screen; // go to end screen
       }
 
 
