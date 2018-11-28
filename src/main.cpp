@@ -17,8 +17,6 @@ enum state {START_screen, GAME_screen, PAUSE_screen, END_screen};
 state current_state = START_screen; // set initial state
 
 
-static const uint8_t SWORD_SCROLL_DELAY = 200;
-
 const int INTBUTTON1 = 7; // up button
 const int INTBUTTON2 = 3; // down button
 const int INTBUTTON3 = 6; // pause button
@@ -28,6 +26,7 @@ volatile bool PAUSE_Pressed = false; // flag for pause button
 const unsigned long DEBOUNCE_TIME_MS = 200; // debounce time interval
 unsigned long previousDebounce = 0; // define and set variable to zero
 unsigned long previousMillis = 0; // define and set variable to zero
+const unsigned long responsetime = 1000; // minimum time player has to respond by
 unsigned long SCORE = 0; // define variable for score
 
 
@@ -81,6 +80,9 @@ void PAUSEscreen(void) {
   display.setCursor(5,20);
   display.println("SCORE:");
   display.display();
+  display.setCursor(80,20);
+  display.println(SCORE);
+  display.display();
   display.setTextSize(1);
   display.setTextColor(WHITE);
   display.setCursor(0,37);
@@ -103,13 +105,16 @@ void PAUSEscreen(void) {
 void ENDscreen(){
   display.setTextSize(2);
   display.setTextColor(WHITE);
-  display.setCursor(20,0);
-  display.println("YOU DIED");
+  display.setCursor(15,0);
+  display.println("GAME OVER");
   display.display();
   display.setTextSize(2);
   display.setTextColor(WHITE);
   display.setCursor(5,20);
   display.println("SCORE:");
+  display.display();
+  display.setCursor(80,20);
+  display.println(SCORE);
   display.display();
   display.setTextSize(1);
   display.setTextColor(WHITE);
@@ -119,11 +124,6 @@ void ENDscreen(){
   display.setTextSize(1);
   display.setTextColor(WHITE);
   display.setCursor(0,47);
-  display.println("-Pause to play again");
-  display.display();
-  display.setTextSize(1);
-  display.setTextColor(WHITE);
-  display.setCursor(0,57);
   display.println("-Down to go to start");
   display.display();
   delay(1000);
@@ -721,44 +721,15 @@ void characterjump(void) {
 
 }
 
-
-void thrownsword(uint8_t offset, int colour){
-  // sword shape
-    display.drawPixel(100-offset,45,colour);
-    display.drawPixel(101-offset,45,colour);
-    display.drawPixel(102-offset,45,colour);
-    display.drawPixel(103-offset,45,colour);
-    display.drawPixel(104-offset,45,colour);
-    display.drawPixel(105-offset,45,colour);
-    display.drawPixel(106-offset,45,colour);
-    display.drawPixel(107-offset,45,colour);
-    display.drawPixel(108-offset,45,colour);
-    display.drawPixel(109-offset,45,colour);
-    display.drawPixel(110-offset,45,colour);
-    display.drawPixel(111-offset,45,colour);
-    display.drawPixel(112-offset,45,colour);
-    display.drawPixel(113-offset,45,colour);
-    display.drawPixel(114-offset,45,colour);
-    display.drawPixel(115-offset,45,colour);
-    display.drawPixel(110-offset,44,colour);
-    display.drawPixel(110-offset,43,colour);
-    display.drawPixel(110-offset,42,colour);
-    display.drawPixel(110-offset,41,colour);
-    display.drawPixel(110-offset,40,colour);
-    display.drawPixel(110-offset,46,colour);
-    display.drawPixel(110-offset,47,colour);
-    display.drawPixel(110-offset,48,colour);
-    display.drawPixel(110-offset,49,colour);
-    display.drawPixel(110-offset,50,colour);
-
-    // display 
-    display.display();
-
-    // throw sword
-    // display.startscrollleft(0x00, 0x0F);
-
-
+void jumpcommand(){
+  // display jump on screen
+  display.setTextSize(2);
+  display.setTextColor(WHITE);
+  display.setCursor(80,30);
+  display.println("JUMP");
+  display.display();
 }
+
 
 
 void setup() {
@@ -782,16 +753,16 @@ void setup() {
 
 
 void loop() {
-  static uint8_t offset = 0;
 
   unsigned long currentmillis = millis(); // recheck and set the time variable for debouncing
 // state machine
   switch(current_state) {
     case START_screen:
-      // reset flags
+      // reset flags and score
       UP_Pressed = false; 
       DWN_Pressed = false;
       PAUSE_Pressed = false; 
+      SCORE = 0;
 
       // actions
       STARTscreen();
@@ -811,29 +782,38 @@ void loop() {
       DWN_Pressed = false;
       // actions
       charactergrounded();
-      if (currentmillis - previousMillis > SWORD_SCROLL_DELAY) {
-        thrownsword(offset, BLACK);
-        offset++;
-        thrownsword(offset, WHITE);
-        previousMillis = currentmillis;
+      // random int- for time delay
+      delay(1000);
+      // tell player to jump
+      jumpcommand();
+      previousMillis = currentmillis; // set response time
+
+      // if player takes too long to respond to the command they go to the end screen
+      if (UP_Pressed && ((currentmillis - previousMillis) > responsetime)){ 
+        display.clearDisplay(); // clear screen
+        current_state = END_screen; // go to end screen
       }
+
+
+  
 
       // make character jump
       if (UP_Pressed && ((currentmillis - previousDebounce) >= DEBOUNCE_TIME_MS)) {
+        previousDebounce = currentmillis; // set new debounce time
+        display.clearDisplay(); // reset display
+        SCORE = SCORE+1; // increase score by one
         characterjump();
         UP_Pressed = false; // reset flag
       }
 
+
       // if some event then state change
       if (PAUSE_Pressed && ((currentmillis - previousDebounce) >= DEBOUNCE_TIME_MS)) {
-      previousDebounce = currentmillis;   // set new debounce time
+      previousDebounce = currentmillis; // set new debounce time
       display.clearDisplay(); // clear screen
       current_state = PAUSE_screen; // go to pause screen
       }
-      // if you die in game go to end screen
-
-      // stop scrolling function
-      display.stopscroll();
+    
 
       break;
 
@@ -863,14 +843,8 @@ void loop() {
       // actions
       ENDscreen();
 
-      // if pause play button is pressed play another game
-      if (PAUSE_Pressed && ((currentmillis - previousDebounce) >= DEBOUNCE_TIME_MS)) {
-      previousDebounce = currentmillis;   // set new debounce time
-      display.clearDisplay(); // clear screen
-      current_state = GAME_screen;
-      }
-      // if up of down button is pressed go to start sceen
-      if ((UP_Pressed && ((currentmillis - previousDebounce) >= DEBOUNCE_TIME_MS)) || (DWN_Pressed && ((currentmillis - previousDebounce) >= DEBOUNCE_TIME_MS))) {
+      // if any button is pressed go to start sceen
+      if ((UP_Pressed && ((currentmillis - previousDebounce) >= DEBOUNCE_TIME_MS)) || (DWN_Pressed && ((currentmillis - previousDebounce) >= DEBOUNCE_TIME_MS)) || (PAUSE_Pressed && ((currentmillis - previousDebounce) >= DEBOUNCE_TIME_MS)) ) {
       previousDebounce = currentmillis;   // set new debounce time
       display.clearDisplay(); // clear screen
       current_state = START_screen;
