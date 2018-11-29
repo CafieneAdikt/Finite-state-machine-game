@@ -28,8 +28,10 @@ unsigned long previousDebounce = 0; // define and set variable to zero
 unsigned long previousMillis = 0; // define and set variable to zero
 const unsigned long responsetime = 5000; // minimum time player has to respond by
 unsigned long SCORE = 0; // define variable for score
-unsigned long Dtime = rand()%1000+500; // random number between
-unsigned long jumporduck = rand()%10+1; // random number between 1 and 10
+unsigned long Dtime = 0; // random number between 500 and 1500
+unsigned long jumporduck = 0; // random number between 1 and 10
+volatile bool jumpflag = false; // flag for game command
+volatile bool duckflag = false; // flag for game command  
 
 
 // interrupt routines for buttons
@@ -839,6 +841,77 @@ void characterduck(void) {
     display.drawPixel(24,47,BLACK);
     display.drawPixel(25,47,BLACK);
     display.drawPixel(26,47,BLACK);
+
+    // head on ground to mimic ducking
+    display.drawCircle(20, 58, 5, WHITE);
+
+    // display character
+    display.display();
+    delay(250);
+
+    // display character grounded again
+    display.drawCircle(20, 58, 5, BLACK);
+    // grounded
+    display.drawCircle(20, 35, 5, WHITE);
+    display.drawPixel(20,41,WHITE);
+    display.drawPixel(20,42,WHITE);
+    display.drawPixel(20,43,WHITE);
+    display.drawPixel(20,44,WHITE);
+    display.drawPixel(20,45,WHITE);
+    display.drawPixel(20,46,WHITE);
+    display.drawPixel(20,47,WHITE);
+    display.drawPixel(20,48,WHITE);
+    display.drawPixel(20,49,WHITE);
+    display.drawPixel(20,50,WHITE);
+    display.drawPixel(20,51,WHITE);
+    display.drawPixel(20,52,WHITE);
+    display.drawPixel(20,53,WHITE);
+    display.drawPixel(20,54,WHITE);
+
+    // left leg
+    display.drawPixel(19,55,WHITE);
+    display.drawPixel(19,56,WHITE);
+    display.drawPixel(18,57,WHITE);
+    display.drawPixel(18,58,WHITE);
+    display.drawPixel(17,59,WHITE);
+    display.drawPixel(17,60,WHITE);
+    display.drawPixel(16,61,WHITE);
+    display.drawPixel(16,62,WHITE);
+    display.drawPixel(15,63,WHITE);
+
+    // right leg
+    display.drawPixel(21,55,WHITE);
+    display.drawPixel(21,56,WHITE);
+    display.drawPixel(22,57,WHITE);
+    display.drawPixel(22,58,WHITE);
+    display.drawPixel(23,59,WHITE);
+    display.drawPixel(23,60,WHITE);
+    display.drawPixel(24,61,WHITE);
+    display.drawPixel(24,62,WHITE);
+    display.drawPixel(25,63,WHITE);
+
+    // left arm
+    display.drawPixel(19,47,WHITE);
+    display.drawPixel(18,47,WHITE);
+    display.drawPixel(17,47,WHITE);
+    display.drawPixel(16,47,WHITE);
+    display.drawPixel(15,47,WHITE);
+    display.drawPixel(14,47,WHITE);
+
+    // right arm
+    display.drawPixel(21,47,WHITE);
+    display.drawPixel(22,47,WHITE);
+    display.drawPixel(23,47,WHITE);
+    display.drawPixel(24,47,WHITE);
+    display.drawPixel(25,47,WHITE);
+    display.drawPixel(26,47,WHITE);
+
+    // display character
+    display.display();
+    delay(250);
+
+
+
 }
 
 void jumpcommand(){
@@ -884,6 +957,7 @@ void setup() {
 void loop() {
 
   unsigned long currentmillis = millis(); // recheck and set the time variable for debouncing
+
 // state machine
   switch(current_state) {
     case START_screen:
@@ -907,24 +981,34 @@ void loop() {
       break;
 
     case GAME_screen:
-      PAUSE_Pressed = false; // reset flag
+      PAUSE_Pressed = false; // reset flags
       UP_Pressed = false;
       DWN_Pressed = false;
+     // jumpflag = false;
+     // duckflag = false; 
+
+      // reset delay and jumporduck variables
+      Dtime = rand()%1000+1000;
+      jumporduck = rand()%10+1;
+
       // actions
       charactergrounded();
-      // random int- for time delay
+
+      // random time delay before command
       delay(Dtime);
 
-      // if statement to chose between jump or duck
+    if (jumpflag == false && duckflag == false){
+      // if statement to randomly chose between jump or duck
       if (jumporduck == 1 || jumporduck == 2 || jumporduck == 3 || jumporduck == 4 || jumporduck == 5){
-       jumpcommand(); // tell player to jump
+        jumpflag = true; // send flag true
+        jumpcommand(); // tell player to jump
       }
       else
       {
+        duckflag = true; // send flag true
         duckcommand(); // tell player to duck
       }
-     
-
+    }
 
       // make character jump
       if (UP_Pressed && ((currentmillis - previousDebounce) >= DEBOUNCE_TIME_MS)) {
@@ -933,7 +1017,8 @@ void loop() {
         display.clearDisplay(); // reset display
         SCORE = SCORE+1; // increase score by one
         characterjump();
-        UP_Pressed = false; // reset flag
+        jumpflag = false;
+        //UP_Pressed = false; // reset flag
       }
 
       // make character duck
@@ -943,17 +1028,16 @@ void loop() {
         display.clearDisplay(); // reset display
         SCORE = SCORE+1; // increase score by one
         characterduck();
-        DWN_Pressed = false; // reset flag
+        duckflag = false;
+        //DWN_Pressed = false; // reset flag
       }
 
-
-      // if player takes too long to respond to the command they go to the end screen
-      if ((currentmillis - previousMillis) >= responsetime){
+      // if player takes too long to respond or presses wrong button they go to the end screen
+      if (((currentmillis - previousMillis) >= responsetime) || (DWN_Pressed && jumpflag) || (UP_Pressed && duckflag)){
         previousMillis = currentmillis; // set response time 
         display.clearDisplay(); // clear screen
         current_state = END_screen; // go to end screen
       }
-
 
       // if some event then state change
       if (PAUSE_Pressed && ((currentmillis - previousDebounce) >= DEBOUNCE_TIME_MS)) {
@@ -962,7 +1046,6 @@ void loop() {
       current_state = PAUSE_screen; // go to pause screen
       }
     
-
       break;
 
     case PAUSE_screen:
