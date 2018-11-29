@@ -965,6 +965,8 @@ void loop() {
       UP_Pressed = false; 
       DWN_Pressed = false;
       PAUSE_Pressed = false; 
+      jumpflag = false;
+      duckflag = false;
       SCORE = 0;
 
       // actions
@@ -984,8 +986,6 @@ void loop() {
       PAUSE_Pressed = false; // reset flags
       UP_Pressed = false;
       DWN_Pressed = false;
-     // jumpflag = false;
-     // duckflag = false; 
 
       // reset delay and jumporduck variables
       Dtime = rand()%1000+1000;
@@ -996,7 +996,8 @@ void loop() {
 
       // random time delay before command
       delay(Dtime);
-
+   
+    // one nested if statement to avoid a second command before the first is completed
     if (jumpflag == false && duckflag == false){
       // if statement to randomly chose between jump or duck
       if (jumporduck == 1 || jumporduck == 2 || jumporduck == 3 || jumporduck == 4 || jumporduck == 5){
@@ -1051,6 +1052,9 @@ void loop() {
     case PAUSE_screen:
     PAUSE_Pressed = false; // reset flags
     DWN_Pressed = false; 
+    jumpflag = false;
+    duckflag = false;
+
       // actions
       PAUSEscreen(); 
 
@@ -1058,6 +1062,7 @@ void loop() {
       if (PAUSE_Pressed && ((currentmillis - previousDebounce) >= DEBOUNCE_TIME_MS)) {
       previousDebounce = currentmillis;   // set new debounce time
       display.clearDisplay(); // clear screen
+      previousMillis = currentmillis; // reset response time
       current_state = GAME_screen; // go back to game srceen state
       }
       // if down button pressed end game
